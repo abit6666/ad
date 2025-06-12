@@ -161,6 +161,10 @@ function handleTap() {
 }
 
 dotLogo.onclick = handleTap;
+dotLogo.ontouchstart = function(e) {
+    e.preventDefault(); // Prevents ghost click
+    handleTap();
+};
 dotArea.ontouchstart = e => { if (dot.style.display === 'block') e.preventDefault(); };
 
 difficultySelect.onchange = function() {
