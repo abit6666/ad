@@ -1,0 +1,314 @@
+/* Base styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: radial-gradient(ellipse at center, #1a237e 0%, #0a0a1a 100%);
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    line-height: 1.6;
+}
+
+.page-wrapper {
+    min-height: 100vh;
+    padding: 2vw 0;
+    overflow-y: auto;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2vw 4vw;
+    background: rgba(42, 42, 42, 0.95);
+    border-radius: 14px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1vw;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    font-size: clamp(2rem, 5vw, 2.8rem);
+}
+
+p {
+    text-align: center;
+    margin-bottom: 2vw;
+    color: #ccc;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+/* Game area */
+#dotArea {
+    position: relative;
+    width: min(96vw, 500px);
+    height: min(60vw, 400px);
+    min-height: 220px;
+    margin: 2vw auto;
+    background: rgba(0,0,0,0.10);
+    border-radius: 18px;
+    box-shadow: 0 0 32px #00e6ff33;
+    overflow: hidden;
+    touch-action: manipulation;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    gap: 1vw;
+    margin: 2vw auto;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 500px;
+}
+
+#difficultySelect, #settingsBtn, #walletConnect, #addNexusNetwork {
+    padding: 1em 2em;
+    border-radius: 10px;
+    background: rgba(34, 34, 34, 0.85);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
+    transition: all 0.3s;
+    margin-bottom: 0.5em;
+    min-width: 140px;
+    outline: none;
+}
+
+#difficultySelect:focus, #settingsBtn:focus, #walletConnect:focus, #addNexusNetwork:focus {
+    box-shadow: 0 0 0 2px #00e6ff88;
+}
+
+#settingsBtn:hover, #walletConnect:hover, #addNexusNetwork:hover {
+    background: rgba(51, 51, 51, 0.95);
+    transform: translateY(-2px);
+}
+
+#walletStatus {
+    text-align: center;
+    margin: 0.5em 0 1em 0;
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    color: #4CAF50;
+    min-height: 1.5em;
+}
+
+/* Messages and feedback */
+#getReady, #streakMsg, #perfectMsg, #roundNum {
+    text-align: center;
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    margin: 0.5em 0;
+    height: 1.5em;
+    font-weight: bold;
+}
+
+#perfectMsg {
+    color: #4CAF50;
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-shadow: 0 0 10px rgba(76,175,80,0.5);
+}
+
+#streakMsg {
+    color: #FFD700;
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-shadow: 0 0 10px rgba(255,215,0,0.5);
+}
+
+/* Results and stats */
+.results {
+    background: rgba(51, 51, 51, 0.9);
+    padding: 1.2em;
+    border-radius: 10px;
+    margin: 2vw auto;
+    text-align: center;
+    max-width: 500px;
+    font-size: clamp(1rem, 2vw, 1.15rem);
+}
+
+.results div {
+    margin: 5px 0;
+    font-size: 1.1em;
+}
+
+.results .message {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1em;
+    padding: 1em;
+    background: rgba(51, 51, 51, 0.9);
+    border-radius: 10px;
+    margin: 2vw auto;
+    max-width: 500px;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+}
+
+.stats div {
+    padding: 0.5em 1em;
+    background: rgba(68, 68, 68, 0.9);
+    border-radius: 7px;
+    font-size: inherit;
+}
+
+/* Leaderboard */
+#leaderboard {
+    padding: 1.2em;
+    background: rgba(51, 51, 51, 0.9);
+    border-radius: 10px;
+    margin: 2vw auto;
+    max-width: 500px;
+}
+
+#leaderboard h3 {
+    margin-bottom: 1em;
+    text-align: center;
+    color: #FFD700;
+    font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+}
+
+.lbItem {
+    padding: 0.7em 1em;
+    margin: 0.4em 0;
+    background: rgba(68, 68, 68, 0.9);
+    border-radius: 7px;
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    transition: all 0.2s;
+}
+
+.lbItem:hover {
+    transform: translateX(5px);
+    background: rgba(85, 85, 85, 0.95);
+}
+
+/* Nexus Dot Logo as clickable target */
+.nexusDotLogo {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: pointer;
+    user-select: none;
+    pointer-events: auto;
+    transition: transform 0.1s;
+    transform-origin: center;
+}
+
+#dot {
+    position: absolute;
+    width: clamp(44px, 10vw, 70px);
+    height: clamp(44px, 10vw, 70px);
+    left: 0;
+    top: 0;
+    display: none;
+    z-index: 2;
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    transform-origin: center;
+    touch-action: manipulation;
+}
+
+#dot:active .nexusDotLogo {
+    transform: scale(0.92);
+}
+
+/* Buttons */
+#restartBtn {
+    display: block;
+    width: min(95%, 320px);
+    padding: 1em;
+    margin: 2vw auto;
+    background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: clamp(1.1rem, 2.2vw, 1.2rem);
+    transition: all 0.3s;
+    box-shadow: 0 4px 16px #0006;
+}
+
+#restartBtn:hover {
+    background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,114,255,0.3);
+}
+
+/* Animations */
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .page-wrapper {
+        padding: 2vw 0.5vw;
+    }
+    .container {
+        padding: 4vw 2vw;
+    }
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2vw;
+    }
+    #difficultySelect, #settingsBtn, #walletConnect, #addNexusNetwork {
+        width: 100%;
+        min-width: 0;
+        font-size: 1.1rem;
+    }
+    #dotArea {
+        width: 98vw;
+        height: 48vw;
+        min-height: 160px;
+    }
+    #dot {
+        width: clamp(36px, 12vw, 60px);
+        height: clamp(36px, 12vw, 60px);
+    }
+    .results, .stats, #leaderboard {
+        max-width: 98vw;
+        font-size: 1rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 900px;
+        padding: 2vw 8vw;
+    }
+    #dotArea {
+        max-width: 600px;
+        height: 400px;
+    }
+}
