@@ -114,9 +114,17 @@ function calculateIQ(reactionTimes, perfects = 0) {
     const alpha = 1/137; // Fine structure constant
     const G = 6.674e-11; // Gravitational constant
 
-    // Get focus contribution
-    const focusContribution = endFocusTest();
+    // Get focus contribution if focus test is active
+    let focusContribution = {
+        focusAmp: 0.5, // Default value
+        focusPhase: 0,
+        focusField: 0.5
+    };
     
+    if (focusTestActive) {
+        focusContribution = endFocusTest();
+    }
+
     // Quantum field state vector: [speed, consistency, perfects, focus, adaptation] as amplitudes
     let speedAmp = Math.max(0, 1 - (avg - 200) / 600);
     let consistencyAmp = Math.max(0, 1 - (stdDev / avg));
@@ -189,7 +197,7 @@ function calculateIQ(reactionTimes, perfects = 0) {
     // Quantum gravity effects (simplified)
     const gravityEffect = G * (speedAmp + consistencyAmp + perfectAmp) / 3;
 
-    // Final quantum IQ calculation with all effects
+    // Base IQ calculation
     let quantumIQ = 100 +
         40 * superposed +
         20 * entanglement +
@@ -209,6 +217,12 @@ function calculateIQ(reactionTimes, perfects = 0) {
     quantumIQ += perfects * 2;
     quantumIQ += vacuumEnergy * 5;
 
+    // Add focus effects
+    if (focusTestActive) {
+        quantumIQ *= (1 + focusContribution.focusField * 0.2);
+        quantumIQ += focusAmp * 10;
+    }
+
     // Quantum uncertainty principle with field effects
     const uncertainty = Math.min(1, stdDev / avg);
     const fieldUncertainty = Math.exp(-fieldStrength);
@@ -218,10 +232,6 @@ function calculateIQ(reactionTimes, perfects = 0) {
     quantumIQ = Math.round(quantumIQ);
     quantumIQ = Math.max(70, Math.min(quantumIQ, 180));
 
-    // Add focus effects to final calculation
-    quantumIQ *= (1 + focusContribution.focusField * 0.2);
-    quantumIQ += focusAmp * 10;
-    
     return quantumIQ;
 }
 
@@ -474,33 +484,43 @@ showLeaderboard();
 startGame();
 
 function startFocusTest() {
-    focusTestActive = true;
-    focusTestStartTime = performance.now();
-    focusTestResults = [];
-    focusQuantumState = FOCUS_QUANTUM_STATES.SUPERPOSED;
-    focusDecoherenceTime = 0;
-    focusEntanglementMatrix = initializeEntanglementMatrix();
-    focusWaveFunction = initializeWaveFunction();
-    focusPotentialWell = initializePotentialWell();
-    focusQuantumTunneling = 0;
-    
-    // Create enhanced quantum focus measurement UI
-    const focusUI = document.createElement('div');
-    focusUI.id = 'focusTestUI';
-    focusUI.innerHTML = `
-        <div class="focus-test-container">
-            <div class="quantum-focus-indicator"></div>
-            <div class="focus-status">Quantum Focus State: Superposed</div>
-            <div class="focus-measurement"></div>
-            <div class="focus-dimensions"></div>
-            <div class="quantum-visualization"></div>
-            <div class="focus-stability"></div>
-        </div>
-    `;
-    document.body.appendChild(focusUI);
-    
-    // Start advanced focus measurement
-    measureFocus();
+    try {
+        focusTestActive = true;
+        focusTestStartTime = performance.now();
+        focusTestResults = [];
+        focusQuantumState = FOCUS_QUANTUM_STATES.SUPERPOSED;
+        focusDecoherenceTime = 0;
+        focusEntanglementMatrix = initializeEntanglementMatrix();
+        focusWaveFunction = initializeWaveFunction();
+        focusPotentialWell = initializePotentialWell();
+        focusQuantumTunneling = 0;
+        
+        // Create enhanced quantum focus measurement UI
+        const focusUI = document.createElement('div');
+        focusUI.id = 'focusTestUI';
+        focusUI.innerHTML = `
+            <div class="focus-test-container">
+                <div class="quantum-focus-indicator"></div>
+                <div class="focus-status">Quantum Focus State: Superposed</div>
+                <div class="focus-measurement"></div>
+                <div class="focus-dimensions"></div>
+                <div class="quantum-visualization"></div>
+                <div class="focus-stability"></div>
+            </div>
+        `;
+        document.body.appendChild(focusUI);
+        
+        // Start advanced focus measurement
+        measureFocus();
+    } catch (error) {
+        console.error('Error in focus test:', error);
+        focusTestActive = false;
+        return {
+            focusAmp: 0.5,
+            focusPhase: 0,
+            focusField: 0.5
+        };
+    }
 }
 
 function initializeEntanglementMatrix() {
@@ -531,93 +551,98 @@ function initializePotentialWell() {
 function measureFocus() {
     if (!focusTestActive) return;
     
-    const currentTime = performance.now();
-    const timeSinceLastMeasurement = currentTime - focusTestStartTime;
-    
-    // Advanced quantum measurement principles
-    const measurementProbability = Math.exp(-timeSinceLastMeasurement / 1000);
-    const quantumNoise = Math.random() * 0.1;
-    
-    // Heisenberg's uncertainty principle for each dimension
-    const uncertainties = Object.keys(FOCUS_DIMENSIONS).map(dim => {
-        const positionUncertainty = Math.sqrt(h / (2 * Math.PI * measurementProbability));
-        const momentumUncertainty = h / (4 * Math.PI * positionUncertainty);
-        return { position: positionUncertainty, momentum: momentumUncertainty };
-    });
-    
-    // Update wave function
-    updateWaveFunction(timeSinceLastMeasurement);
-    
-    // Update entanglement matrix
-    updateEntanglementMatrix();
-    
-    // Calculate quantum tunneling probability
-    const tunnelingProb = calculateTunnelingProbability();
-    
-    // Focus quantum state evolution with advanced states
-    switch (focusQuantumState) {
-        case FOCUS_QUANTUM_STATES.SUPERPOSED:
-            if (Math.random() < measurementProbability) {
-                focusQuantumState = FOCUS_QUANTUM_STATES.COLLAPSED;
-                updateFocusUI("Focus State Collapsed");
-            }
-            break;
-            
-        case FOCUS_QUANTUM_STATES.COLLAPSED:
-            if (Math.random() < 0.3) {
-                focusQuantumState = FOCUS_QUANTUM_STATES.ENTANGLED;
-                updateFocusUI("Focus State Entangled");
-            }
-            break;
-            
-        case FOCUS_QUANTUM_STATES.ENTANGLED:
-            focusDecoherenceTime += timeSinceLastMeasurement;
-            if (focusDecoherenceTime > 2000) {
-                if (tunnelingProb > 0.7) {
-                    focusQuantumState = FOCUS_QUANTUM_STATES.TUNNELING;
-                    updateFocusUI("Focus State Tunneling");
-                } else {
-                    focusQuantumState = FOCUS_QUANTUM_STATES.DECOHERED;
-                    updateFocusUI("Focus State Decohered");
+    try {
+        const currentTime = performance.now();
+        const timeSinceLastMeasurement = currentTime - focusTestStartTime;
+        
+        // Advanced quantum measurement principles
+        const measurementProbability = Math.exp(-timeSinceLastMeasurement / 1000);
+        const quantumNoise = Math.random() * 0.1;
+        
+        // Heisenberg's uncertainty principle for each dimension
+        const uncertainties = Object.keys(FOCUS_DIMENSIONS).map(dim => {
+            const positionUncertainty = Math.sqrt(h / (2 * Math.PI * measurementProbability));
+            const momentumUncertainty = h / (4 * Math.PI * positionUncertainty);
+            return { position: positionUncertainty, momentum: momentumUncertainty };
+        });
+        
+        // Update wave function
+        updateWaveFunction(timeSinceLastMeasurement);
+        
+        // Update entanglement matrix
+        updateEntanglementMatrix();
+        
+        // Calculate quantum tunneling probability
+        const tunnelingProb = calculateTunnelingProbability();
+        
+        // Focus quantum state evolution with advanced states
+        switch (focusQuantumState) {
+            case FOCUS_QUANTUM_STATES.SUPERPOSED:
+                if (Math.random() < measurementProbability) {
+                    focusQuantumState = FOCUS_QUANTUM_STATES.COLLAPSED;
+                    updateFocusUI("Focus State Collapsed");
                 }
-            }
-            break;
-            
-        case FOCUS_QUANTUM_STATES.TUNNELING:
-            if (Math.random() < 0.5) {
-                focusQuantumState = FOCUS_QUANTUM_STATES.RESONANT;
-                updateFocusUI("Focus State Resonant");
-            }
-            break;
-            
-        case FOCUS_QUANTUM_STATES.RESONANT:
-            if (Math.random() < 0.3) {
-                focusQuantumState = FOCUS_QUANTUM_STATES.COHERENT;
-                updateFocusUI("Focus State Coherent");
-            }
-            break;
-    }
-    
-    // Record advanced focus measurement
-    const focusMeasurement = {
-        time: currentTime,
-        state: focusQuantumState,
-        uncertainties: uncertainties,
-        noise: quantumNoise,
-        decoherence: focusDecoherenceTime,
-        waveFunction: [...focusWaveFunction],
-        entanglement: focusEntanglementMatrix.map(row => [...row]),
-        tunneling: tunnelingProb
-    };
-    
-    focusTestResults.push(focusMeasurement);
-    updateFocusMeasurement(focusMeasurement);
-    updateFocusDimensions();
-    updateQuantumVisualization();
-    
-    // Continue measurement if test is active
-    if (focusTestActive) {
-        requestAnimationFrame(measureFocus);
+                break;
+                
+            case FOCUS_QUANTUM_STATES.COLLAPSED:
+                if (Math.random() < 0.3) {
+                    focusQuantumState = FOCUS_QUANTUM_STATES.ENTANGLED;
+                    updateFocusUI("Focus State Entangled");
+                }
+                break;
+                
+            case FOCUS_QUANTUM_STATES.ENTANGLED:
+                focusDecoherenceTime += timeSinceLastMeasurement;
+                if (focusDecoherenceTime > 2000) {
+                    if (tunnelingProb > 0.7) {
+                        focusQuantumState = FOCUS_QUANTUM_STATES.TUNNELING;
+                        updateFocusUI("Focus State Tunneling");
+                    } else {
+                        focusQuantumState = FOCUS_QUANTUM_STATES.DECOHERED;
+                        updateFocusUI("Focus State Decohered");
+                    }
+                }
+                break;
+                
+            case FOCUS_QUANTUM_STATES.TUNNELING:
+                if (Math.random() < 0.5) {
+                    focusQuantumState = FOCUS_QUANTUM_STATES.RESONANT;
+                    updateFocusUI("Focus State Resonant");
+                }
+                break;
+                
+            case FOCUS_QUANTUM_STATES.RESONANT:
+                if (Math.random() < 0.3) {
+                    focusQuantumState = FOCUS_QUANTUM_STATES.COHERENT;
+                    updateFocusUI("Focus State Coherent");
+                }
+                break;
+        }
+        
+        // Record advanced focus measurement
+        const focusMeasurement = {
+            time: currentTime,
+            state: focusQuantumState,
+            uncertainties: uncertainties,
+            noise: quantumNoise,
+            decoherence: focusDecoherenceTime,
+            waveFunction: [...focusWaveFunction],
+            entanglement: focusEntanglementMatrix.map(row => [...row]),
+            tunneling: tunnelingProb
+        };
+        
+        focusTestResults.push(focusMeasurement);
+        updateFocusMeasurement(focusMeasurement);
+        updateFocusDimensions();
+        updateQuantumVisualization();
+        
+        // Continue measurement if test is active
+        if (focusTestActive) {
+            requestAnimationFrame(measureFocus);
+        }
+    } catch (error) {
+        console.error('Error in focus measurement:', error);
+        focusTestActive = false;
     }
 }
 
@@ -698,6 +723,14 @@ function updateFocusMeasurement(measurement) {
 }
 
 function endFocusTest() {
+    if (!focusTestActive) {
+        return {
+            focusAmp: 0.5,
+            focusPhase: 0,
+            focusField: 0.5
+        };
+    }
+
     focusTestActive = false;
     
     // Calculate focus score using quantum principles
